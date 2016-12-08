@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <script src="bower_components/react/react.min.js"></script>
+        <script src="bower_components/react/react-dom.min.js"></script>
+        <script src="bower_components/babel/browser.min.js"></script>
+    </head>
+    <body
+        <div id="container"></div>
+
+            <script type="text/babel">
+                     var TodoBanner = React.createClass({
+                          render: function(){
+                            return (
+                              <h3>My Task</h3>
+                            );
+                          }
+                        });
+
+                        var TodoList = React.createClass({
+                          render: function() {
+                          var createItem = function(itemText) {
+                            return (
+                                <TodoListItem>{itemText}</TodoListItem>
+                              );
+                          };
+                          return <ul>{this.props.items.map(createItem)}</ul>;
+                          }
+                        });
+
+                        var TodoListItem= React.createClass
+                        ({
+                            getInitialState: function() 
+                            {
+                                return {
+                                    isSelected: false
+                                };
+                            },
+                            onChecked: function()
+                            {
+                                this.setState({
+                                isSelected: !this.state.isSelected
+                                });
+                            },
+
+                            render: function()
+                            {
+                                var isSelected = this.state.isSelected;
+                                if (isSelected) 
+                                {
+                                    return (<li><input type="checkbox" name="list" onChange={this.onChecked}  /><strike>{this.props.children} </strike></li>);
+                            
+                                }
+                                else{
+                                return (<li><input type="checkbox" name="list" onChange={this.onChecked}  />{this.props.children} </li>);
+                            
+                                }
+                                }
+                        });
+
+                        var TodoForm = React.createClass({
+                          getInitialState: function() {
+                            return {item: ''};
+                            },
+                          handleSubmit: function(e){
+                            e.preventDefault();
+                            this.props.onFormSubmit(this.state.item);
+                            this.setState({item: ''});
+                            return;
+                          },
+                          onChange: function(e){
+                            this.setState({
+                              item: e.target.value
+                            });
+                          },
+                          render: function(){
+                            return (
+                              <form onSubmit={this.handleSubmit}>
+                                <input type='text' ref='item' onChange={this.onChange} value={this.state.item}/>
+                                <input type='submit' value='Add'/>
+                              </form>
+                            );
+                          }
+                        });        
+
+                        var TodoApp = React.createClass({
+                          getInitialState: function() {
+                          return {items: [' item 1', ' item 2']};
+                          },
+                          updateItems: function(newItem) {
+                            var allItems = this.state.items.concat([newItem]);
+                            this.setState({
+                            items: allItems
+                          });
+                          },
+                          render: function() {
+                          return (
+                            <div>
+                            <TodoBanner/>
+                            
+                            <TodoForm onFormSubmit={this.updateItems}/>
+                            <TodoList items={this.state.items}/>
+                            </div>
+                          );
+                          }
+                        });
+
+                        ReactDOM.render(<TodoApp/>, document.getElementById('container'));
+            </script>
+
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
